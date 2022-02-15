@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"ezratameno.net/snippetbox/pkg/forms"
-	"ezratameno.net/snippetbox/pkg/models"
+	"github.com/ezratameno/lets_go/pkg/forms"
+	"github.com/ezratameno/lets_go/pkg/models"
 )
 
 // Change the signature of the home handler so it is defined as a method against

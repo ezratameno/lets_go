@@ -8,7 +8,7 @@ import (
 	// whatever module path you set up back in chapter 02.02 (Project Setup and Enabling
 	// Modules) so that the import statement looks like this:
 	// "{your-module-path}/pkg/models".
-	"ezratameno.net/snippetbox/pkg/models"
+	"github.com/ezratameno/lets_go/pkg/models"
 )
 
 // Define a SnippetModel type which wraps a sql.DB connection pool.

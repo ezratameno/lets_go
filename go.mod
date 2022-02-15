@@ -1,4 +1,4 @@
-module ezratameno.net/snippetbox
+module github.com/ezratameno/lets_go
 
 go 1.17
 

@@ -9,7 +9,7 @@ import (
 	"text/template"
 	"time"
 
-	"ezratameno.net/snippetbox/pkg/models/mysql"
+	"github.com/ezratameno/lets_go/pkg/models/mysql"
 	_ "github.com/go-sql-driver/mysql" // New import
 	"github.com/golangcollege/sessions"
 )

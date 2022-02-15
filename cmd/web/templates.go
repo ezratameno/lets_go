@@ -5,8 +5,8 @@ import (
 	"text/template"
 	"time"
 
-	"ezratameno.net/snippetbox/pkg/forms"
-	"ezratameno.net/snippetbox/pkg/models"
+	"github.com/ezratameno/lets_go/pkg/forms"
+	"github.com/ezratameno/lets_go/pkg/models"
 )
 
 // Define a templateData type to act as the holding structure for
