@@ -39,7 +39,6 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	// Use the SnippetModel object's Get method to retrieve the data for a
 	// specific record based on its ID. If no matching record is found,
 	// return a 404 Not Found response.
-
 	s, err := app.snippets.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
@@ -50,7 +49,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Use the new render helper.
+	// Pass the flash message to the template.
 	app.render(w, r, "show.page.tmpl", &templateData{
 		Snippet: s,
 	})
@@ -96,6 +95,13 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+
+	// Use the Put() method to add a string value ("Your snippet was saved
+	// successfully!") and the corresponding key ("flash") to the session
+	// data. Note that if there's no existing session for the current user
+	// (or their session has expired) then a new, empty, session for them
+	// will automatically be created by the session middleware.
+	app.session.Put(r, "flash", "Snippet successfully created!")
 
 	// Change the redirect to use the new semantic URL style of /snippet/:id
 	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
