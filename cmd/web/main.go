@@ -33,10 +33,9 @@ func main() {
 	addr := flag.String("addr", ":4000", "Http network address")
 
 	// Define a new command-line flag for the MySQL DSN string.
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "test_user:secret@tcp(db)/snippetbox?parseTime=true", "MySQL data source name")
 
 	// Define a new command-line flag for the session secret (a random key which
-	// will be used to encrypt and authenticate session cookies). It should be 32
 	// will be used to encrypt and authenticate session cookies). It should be 32
 	// bytes long.
 	secret := flag.String("secret", "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
