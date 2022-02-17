@@ -4,15 +4,20 @@ import (
 	"net/http"
 
 	"github.com/bmizerany/pat"
+	"github.com/ezratameno/lets_go/middleware"
 	"github.com/justinas/alice"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // Update the signature for the routes() method so that it returns a
 // http.Handler instead of *http.ServeMux.
 func (app *application) routes() http.Handler {
+
+	metricsMiddleware := middleware.NewMetricsMiddleware()
+
 	// Create a middleware chain containing our 'standard' middleware
 	// which will be used for every request our application receives.
-	standardMiddleware := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+	standardMiddleware := alice.New(metricsMiddleware.Metrics, app.recoverPanic, app.logRequest, secureHeaders)
 
 	// Create a new middleware chain containing the middleware specific to
 	// our *dynamic application routes*. For now, this chain will only contain
@@ -28,7 +33,7 @@ func (app *application) routes() http.Handler {
 	mux.Get("/snippet/create", dynamicMiddelware.ThenFunc(http.HandlerFunc(app.createSnippetForm)))
 	mux.Post("/snippet/create", dynamicMiddelware.ThenFunc(http.HandlerFunc(app.createSnippet)))
 	mux.Get("/snippet/:id", dynamicMiddelware.ThenFunc(http.HandlerFunc(app.showSnippet)))
-
+	mux.Get("/metrics", promhttp.Handler())
 	// Create a file server which serves files out of the "./ui/static" directory.
 	// Note that the path given to the http.Dir function is relative to the project
 	// directory root.

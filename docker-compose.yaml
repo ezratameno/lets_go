@@ -31,7 +31,29 @@ services:
       - db
     volumes:
      - .:/app/
+  
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+    depends_on:
+      - api
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana-data:/var/lib/grafana
 networks:
   default:
 volumes:
   mysql_data:
+  grafana-data:
+    external: true
