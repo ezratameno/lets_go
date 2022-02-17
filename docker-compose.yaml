@@ -56,4 +56,3 @@ networks:
 volumes:
   mysql_data:
   grafana-data:
-    external: true
