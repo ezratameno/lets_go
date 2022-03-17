@@ -14,12 +14,17 @@ import (
 // At the moment it only contains one field, but we'll add more
 // to it as the build progresses.
 // Add a Flash field to the templateData struct.
+// Add a new IsAuthenticated field to the templateData struct.
+// Add a new CSRFToken field to the templateData.
+
 type templateData struct {
-	CurrentYear int
-	Flash       string
-	Form        *forms.Form
-	Snippet     *models.Snippet
-	Snippets    []*models.Snippet
+	CurrentYear     int
+	Flash           string
+	Form            *forms.Form
+	Snippet         *models.Snippet
+	Snippets        []*models.Snippet
+	IsAuthenticated bool
+	CSRFToken       string
 }
 
 // Create a humanDate function which returns a nicely formatted string

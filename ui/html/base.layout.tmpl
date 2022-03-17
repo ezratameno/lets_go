@@ -17,9 +17,27 @@
             </h1>
         </header>
         <nav>
-            <a href="/">Home</a>
-            <!-- Add a link to the new form -->
-            <a href="/snippet/create">Create snippet</a>
+            <!-- Update the navigation to include signup, login and logout links -->
+            <div>
+                <a href="/">Home</a>
+                <!-- Add a link to the new form -->
+                <!-- Toggle the navigation link -->
+                {{if .IsAuthenticated}}
+                <a href="/snippet/create">Create snippet</a>
+                {{end}}
+            </div>
+            <div>
+                <a href="/user/signup">Signup</a>
+                <a href="/user/login">Login</a>
+                {{if .IsAuthenticated}}
+                <!-- Include the CSRF token -->
+                <form action="/user/logout" method="Post">
+                    <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+                    <button>Logout</button>
+                </form>
+                {{end}}
+            </div>
+            
         </nav>
         <main>
             {{with .Flash}}

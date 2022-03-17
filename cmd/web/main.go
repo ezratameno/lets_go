@@ -17,12 +17,14 @@ import (
 // Dependency injection
 // Add a snippets field to the application struct. This will allow us to
 // make the SnippetModel object available to our handlers.
+// Add a new users field to the application struct.
 type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
 	session       *sessions.Session
 	snippets      *mysql.SnippetModel
 	templateCache map[string]*template.Template
+	users         *mysql.UserModel
 }
 
 func main() {
@@ -33,7 +35,7 @@ func main() {
 	addr := flag.String("addr", ":4000", "Http network address")
 
 	// Define a new command-line flag for the MySQL DSN string.
-	dsn := flag.String("dsn", "test_user:secret@tcp(db)/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
 
 	// Define a new command-line flag for the session secret (a random key which
 	// will be used to encrypt and authenticate session cookies). It should be 32
@@ -83,17 +85,21 @@ func main() {
 	session.Lifetime = 12 * time.Hour
 
 	// And add the session manager to our application dependencies.
+	// Initialize a mysql.UserModel instance and add it to the application
+	// dependencies.
 	app := &application{
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		session:       session,
 		snippets:      &mysql.SnippetModel{DB: db},
 		templateCache: templateCache,
+		users:         &mysql.UserModel{DB: db},
 	}
 	// Initialize a new http.Server struct. We set the Addr and Handler fields so
 	// that the server uses the same network address and routes as before, and set
 	// the ErrorLog field so that the server now uses the custom errorLog logger in
 	// the event of any problems.
+
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
