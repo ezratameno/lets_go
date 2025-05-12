@@ -1,0 +1,15 @@
+name: Ci
+
+on:
+  pull_request:
+
+
+jobs:
+  dummy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run dummy script
+        run: echo "This is a dummy job to test GitHub Actions."
