@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       runners: ${{ steps.list_runners.outputs.runners }}
+      data: ${{ steps.list_runners.outputs.data }}
     steps:
       - name: List runners
         id: list_runners
@@ -31,6 +32,13 @@ jobs:
           echo "Available runners: $runners"
 
           echo runners=$runners >> $GITHUB_OUTPUT
+
+          echo data=$(echo -e "[
+          { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },
+          { "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" }
+          ]") >> $GITHUB_OUTPUT
+
+      
   
   run_ci:
     needs: [pldm_free_runners]
@@ -41,4 +49,4 @@ jobs:
       project: ${{fromJson(matrix.data).project }}
     strategy:
       matrix:
-        data: [{ "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" }]
+        data: ${{(needs.pldm_free_runners.outputs.data) }}
