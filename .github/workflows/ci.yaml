@@ -14,7 +14,7 @@ jobs:
       runner_name: ${{ runner.name }}
     steps:
       - name: Print runner name
-        run: echo Set up runner ${{ runner.name }}, with dummy ${{ matrix.dummy }}"
+        run: echo Set up runner ${{ runner.name }}, with dummy ${{ matrix.dummy }}
 
 
   test:
