@@ -5,6 +5,10 @@ on:
 
 
 
+permissions:
+ actions: read
+ contents: read
+
 
 jobs:
 
