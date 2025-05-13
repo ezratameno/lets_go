@@ -34,7 +34,7 @@ jobs:
   
   run_ci:
     needs: [pldm_free_runners]
-    uses: ./.github/workflows/ci_manifest.yaml
+    uses: ./.github/workflows/ci.yaml
     with:
       runner_name: ${{ matrix.runner }}
     strategy:
