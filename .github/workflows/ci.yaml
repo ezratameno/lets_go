@@ -13,16 +13,18 @@ permissions:
 
 jobs:
 
-  list_runners:
+  pldm_free_runners:
     runs-on: ubuntu-latest
     steps:
       - name: List runners
         run: |
           echo "Available runners:"
-          curl -s -H "Authorization: token ${{ secrets.LETS_GO_TOKEN }}" \
+          runners=$(curl -s -H "Authorization: token ${{ secrets.LETS_GO_TOKEN }}" \
            -H "Accept: application/vnd.github+json" \
            https://api.github.com/repos/ezratameno/lets_go/actions/runners \
-           | jq '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]'
+           | jq -c '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]')
+
+          echo "Available runners: $runners"
 
           
 
