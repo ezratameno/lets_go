@@ -4,7 +4,21 @@ on:
   pull_request:
 
 
+
+
 jobs:
+
+  list_runners:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: List runners
+        run: |
+          echo "Available runners:"
+          gh api repos/OWNER/REPO/actions/runners --paginate \ --jq '.runners[] | {id, name, status, labels}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
   setup:
     runs-on: pldm
     strategy:
