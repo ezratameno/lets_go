@@ -5,11 +5,18 @@ on:
 
 
 jobs:
-  dummy:
-    runs-on: self-hosted
+  setup:
+    runs-on: pldm
+    outputs:
+      runner_name: ${{ runner.name }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Print runner name
+        run: echo "Running on ${{ runner.name }}"
 
-      - name: Run dummy script
-        run: echo "This is a dummy job to test GitHub Actions."
+
+  test:
+    runs-on: ${{ needs.setup.outputs.runner_name }}
+    needs: setup
+    steps:
+      - name: Print runner name
+        run: echo "Running on ${{ runner.name }}"
