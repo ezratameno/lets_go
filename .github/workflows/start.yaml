@@ -44,9 +44,9 @@ jobs:
     needs: [pldm_free_runners]
     uses: ./.github/workflows/ci.yaml
     with:
-      runner_name: ${{fromJson(matrix.data).runner }}
-      manifest: ${{fromJson(matrix.data).manifest }}
-      project: ${{fromJson(matrix.data).project }}
+      runner_name: ${{(matrix.data).runner }}
+      manifest: ${{(matrix.data).manifest }}
+      project: ${{(matrix.data).project }}
     strategy:
       matrix:
-        data: ${{(needs.pldm_free_runners.outputs.data) }}
+        data: ${{fromJSON(needs.pldm_free_runners.outputs.data) }}
