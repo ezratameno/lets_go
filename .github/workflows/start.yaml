@@ -1,0 +1,42 @@
+name: Regression test
+
+on:
+  pull_request:
+
+
+
+permissions:
+ actions: read
+ contents: read
+ 
+
+
+jobs:
+  pldm_free_runners:
+    runs-on: ubuntu-latest
+    outputs:
+      runners: ${{ steps.list_runners.outputs.runners }}
+    steps:
+      - name: List runners
+        id: list_runners
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        run: |
+          echo "Available runners:"
+          runners=$(curl -s -H "Authorization: token ${{ secrets.LETS_GO_TOKEN }}" \
+           -H "Accept: application/vnd.github+json" \
+           https://api.github.com/repos/ezratameno/lets_go/actions/runners \
+           | jq -c '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]')
+
+          echo "Available runners: $runners"
+
+          echo runners=$runners >> $GITHUB_OUTPUT
+  
+  run_ci:
+    needs: [pldm_free_runners]
+    uses: ./.github/workflows/ci_manifest.yaml
+    with:
+      runner_name: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: ${{(fromJSON(needs.pldm_free_runners.outputs.runners)) }}

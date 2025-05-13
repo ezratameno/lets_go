@@ -1,39 +1,17 @@
 name: Ci
 
 on:
-  pull_request:
-
-
-
-permissions:
- actions: read
- contents: read
- 
+  workflow_call:
+    inputs:
+      runner_name:
+        required: true
+        type: string
 
 
 jobs:
 
-  pldm_free_runners:
-    runs-on: ubuntu-latest
-    steps:
-      - name: List runners
-        run: |
-          echo "Available runners:"
-          runners=$(curl -s -H "Authorization: token ${{ secrets.LETS_GO_TOKEN }}" \
-           -H "Accept: application/vnd.github+json" \
-           https://api.github.com/repos/ezratameno/lets_go/actions/runners \
-           | jq -c '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]')
-
-          echo "Available runners: $runners"
-
-          
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-
-
   setup:
-    runs-on: pldm
+    runs-on: ${{inputs.runner_name }}
     strategy:
       matrix:
         dummy: [dummy1, dummy2]
@@ -45,7 +23,7 @@ jobs:
 
 
   test:
-    runs-on: ${{ needs.setup.outputs.runner_name }}
+    runs-on: ${{inputs.runner_name }}
     needs: setup
     strategy:
       matrix:
