@@ -37,7 +37,8 @@ jobs:
     uses: ./.github/workflows/ci.yaml
     with:
       runner_name: ${{ matrix.runner }}
-      manifest_data: ${{fromJson(matrix.manifest_data) }}
+      manifest: ${{fromJson(matrix.manifest_data).manifest }}
+      project: ${{fromJson(matrix.manifest_data).project }}
     strategy:
       matrix:
         runner: ${{(fromJSON(needs.pldm_free_runners.outputs.runners)) }}

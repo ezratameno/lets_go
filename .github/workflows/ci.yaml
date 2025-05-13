@@ -6,7 +6,10 @@ on:
       runner_name:
         required: true
         type: string
-      manifest_data:
+      manifest:
+        required: true
+        type: string
+      project:
         required: true
         type: string
 
