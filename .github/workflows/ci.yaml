@@ -7,16 +7,22 @@ on:
 jobs:
   setup:
     runs-on: pldm
+    strategy:
+      matrix:
+        dummy: [dummy1, dummy2]
     outputs:
       runner_name: ${{ runner.name }}
     steps:
       - name: Print runner name
-        run: echo "Running on ${{ runner.name }}"
+        run: echo Set up runner ${{ runner.name }}, with dummy ${{ matrix.dummy }}"
 
 
   test:
     runs-on: ${{ needs.setup.outputs.runner_name }}
     needs: setup
+    strategy:
+      matrix:
+        dummy: [dummy1, dummy2]
     steps:
       - name: Print runner name
-        run: echo "Running on ${{ runner.name }}"
+        run: echo "Running on ${{ runner.name }}, with dummy ${{ matrix.dummy }}"
