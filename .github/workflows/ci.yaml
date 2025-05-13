@@ -16,7 +16,7 @@ jobs:
           echo "Available runners:"
           gh api repos/OWNER/REPO/actions/runners --paginate \ --jq '.runners[] | {id, name, status, labels}'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
 
   setup:
