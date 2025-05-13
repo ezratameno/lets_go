@@ -6,6 +6,9 @@ on:
       runner_name:
         required: true
         type: string
+      manifest_data:
+        required: true
+        type: string
 
 
 jobs:
