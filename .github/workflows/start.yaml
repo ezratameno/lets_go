@@ -33,10 +33,7 @@ jobs:
 
           echo runners=$runners >> $GITHUB_OUTPUT
 
-          echo data=$(echo -e "[
-          { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },
-          { "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" }
-          ]") >> $GITHUB_OUTPUT
+          echo data=$(echo "[           { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },           { "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" }]") >> $GITHUB_OUTPUT
 
       
   
