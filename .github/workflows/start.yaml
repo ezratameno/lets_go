@@ -17,6 +17,7 @@ jobs:
     outputs:
       runners: ${{ steps.list_runners.outputs.runners }}
       data: ${{ steps.list_runners.outputs.data }}
+      max-parallel: ${{ steps.list_runners.outputs.max-parallel }}
     steps:
       - name: List runners
         id: list_runners
@@ -37,6 +38,7 @@ jobs:
           data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" },{ "manifest": "manifest4", "project": "project4","runner": "Ezra-ta-LPT" }]') 
           echo $data
           echo data=$data >> $GITHUB_OUTPUT
+          echo max-parallel=2 >> $GITHUB_OUTPUT
 
       
   
@@ -48,7 +50,7 @@ jobs:
       manifest: ${{(matrix.data).manifest }}
       project: ${{(matrix.data).project }}
     strategy:
-      max-parallel: 2
+      max-parallel: ${{ needs.pldm_free_runners.outputs.max-parallel }}
       fail-fast: false
       matrix:
         data: ${{fromJSON(needs.pldm_free_runners.outputs.data) }}
