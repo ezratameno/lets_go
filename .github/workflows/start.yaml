@@ -34,7 +34,7 @@ jobs:
           echo runners=$runners >> $GITHUB_OUTPUT
 
           
-          data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" }]') 
+          data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" },{ "manifest": "manifest4", "project": "project4","runner": "Ezra-ta-LPT" }]') 
           echo $data
           echo data=$data >> $GITHUB_OUTPUT
 
@@ -48,5 +48,7 @@ jobs:
       manifest: ${{(matrix.data).manifest }}
       project: ${{(matrix.data).project }}
     strategy:
+      max-parallel: 2
+      fail-fast: false
       matrix:
         data: ${{fromJSON(needs.pldm_free_runners.outputs.data) }}

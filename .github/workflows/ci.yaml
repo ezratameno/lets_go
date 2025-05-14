@@ -13,30 +13,24 @@ on:
         required: true
         type: string
 
-concurrency:
-  group: ${{inputs.runner_name }}
-  # cancel-in-progress: true
+# concurrency:
+#   group: ${{inputs.runner_name }}
+#   # cancel-in-progress: true
 
 jobs:
 
   setup:
     runs-on: ${{inputs.runner_name }}
-    strategy:
-      matrix:
-        dummy: [dummy1, dummy2]
     outputs:
       runner_name: ${{ runner.name }}
     steps:
       - name: Print runner name
-        run: echo Set up runner ${{ runner.name }}, with dummy ${{ matrix.dummy }}
+        run: echo Set up runner ${{ runner.name }}
 
 
   test:
     runs-on: ${{inputs.runner_name }}
     needs: setup
-    strategy:
-      matrix:
-        dummy: [dummy1, dummy2]
     steps:
       - name: Print runner name
-        run: echo "Running on ${{ runner.name }}, with dummy ${{ matrix.dummy }}"
+        run: echo "Running on ${{ runner.name }}"
