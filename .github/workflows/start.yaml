@@ -17,7 +17,7 @@ jobs:
     outputs:
       runners: ${{ steps.list_runners.outputs.runners }}
       data: ${{ steps.list_runners.outputs.data }}
-      max-parallel: ${{ steps.list_runners.outputs.max-parallel }}
+      results: ${{ steps.list_runners.outputs.results }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -32,9 +32,6 @@ jobs:
            https://api.github.com/repos/ezratameno/lets_go/actions/runners \
            | jq -c '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]')
 
-          echo "Available runners: $runners"
-
-          echo runners=$runners >> $GITHUB_OUTPUT
 
           
           data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" },{ "manifest": "manifest4", "project": "project4","runner": "Ezra-ta-LPT" }]') 
@@ -42,8 +39,11 @@ jobs:
           echo data=$data >> $GITHUB_OUTPUT
 
           num_runners=$(cat results.json | jq .num_runners)
-          echo num runners: $num_runners
-          echo max-parallel=$num_runners >> $GITHUB_OUTPUT
+          results=$(cat results.json)
+
+          echo results=$results >> $GITHUB_OUTPUT
+          # echo num runners: $num_runners
+          # echo max-parallel=$num_runners >> $GITHUB_OUTPUT
 
       
   
@@ -55,7 +55,7 @@ jobs:
       manifest: ${{(matrix.data).manifest }}
       project: ${{(matrix.data).project }}
     strategy:
-      max-parallel: ${{ needs.pldm_free_runners.outputs.max-parallel }}
+      max-parallel: ${{ fromJson(needs.pldm_free_runners.outputs.results).num_runners   }}
       fail-fast: false
       matrix:
         data: ${{fromJSON(needs.pldm_free_runners.outputs.data) }}
