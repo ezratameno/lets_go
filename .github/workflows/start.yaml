@@ -19,6 +19,8 @@ jobs:
       data: ${{ steps.list_runners.outputs.data }}
       max-parallel: ${{ steps.list_runners.outputs.max-parallel }}
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: List runners
         id: list_runners
         env:
