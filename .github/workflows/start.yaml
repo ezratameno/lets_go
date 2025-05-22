@@ -41,7 +41,7 @@ jobs:
 
           num_runners=$(cat results.json | jq .num_runners)
           echo num runners: $num_runners
-          echo max-parallel=2 >> $GITHUB_OUTPUT
+          echo max-parallel=$num_runners >> $GITHUB_OUTPUT
 
       
   
