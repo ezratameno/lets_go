@@ -1,0 +1,61 @@
+name: Regression test
+
+on:
+  pull_request:
+
+
+
+permissions:
+ actions: read
+ contents: read
+ 
+
+
+jobs:
+  pldm_free_runners:
+    runs-on: ubuntu-latest
+    outputs:
+      runners: ${{ steps.list_runners.outputs.runners }}
+      data: ${{ steps.list_runners.outputs.data }}
+      results: ${{ steps.list_runners.outputs.results }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: List runners
+        id: list_runners
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        run: |
+          echo "Available runners:"
+          runners=$(curl -s -H "Authorization: token ${{ secrets.LETS_GO_TOKEN }}" \
+           -H "Accept: application/vnd.github+json" \
+           https://api.github.com/repos/ezratameno/lets_go/actions/runners \
+           | jq -c '[.runners[] | select(.status == "online") | select(.labels[].name == "pldm") | .name]')
+
+
+          
+          data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" },{ "manifest": "manifest4", "project": "project4","runner": "Ezra-ta-LPT" }]') 
+          echo $data
+          echo data=$data >> $GITHUB_OUTPUT
+
+          num_runners=$(cat results.json | jq .num_runners)
+          results=$(cat results.json)
+
+          echo results=$results >> $GITHUB_OUTPUT
+          # echo num runners: $num_runners
+          # echo max-parallel=$num_runners >> $GITHUB_OUTPUT
+
+      
+  
+  run_ci:
+    needs: [pldm_free_runners]
+    uses: ./.github/workflows/ci.yaml
+    with:
+      runner_name: ${{(matrix.data).runner }}
+      manifest: ${{(matrix.data).manifest }}
+      project: ${{(matrix.data).project }}
+    strategy:
+      max-parallel: ${{ fromJson(needs.pldm_free_runners.outputs.results).num_runners   }}
+      fail-fast: false
+      matrix:
+        data: ${{fromJSON(needs.pldm_free_runners.outputs.data) }}

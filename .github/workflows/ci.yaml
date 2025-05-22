@@ -1,0 +1,36 @@
+name: Ci
+
+on:
+  workflow_call:
+    inputs:
+      runner_name:
+        required: true
+        type: string
+      manifest:
+        required: true
+        type: string
+      project:
+        required: true
+        type: string
+
+# concurrency:
+#   group: ${{inputs.runner_name }}
+#   # cancel-in-progress: true
+
+jobs:
+
+  setup:
+    runs-on: ${{inputs.runner_name }}
+    outputs:
+      runner_name: ${{ runner.name }}
+    steps:
+      - name: Print runner name
+        run: echo Set up runner ${{ runner.name }}
+
+
+  test:
+    runs-on: ${{inputs.runner_name }}
+    needs: setup
+    steps:
+      - name: Print runner name
+        run: echo "Running on ${{ runner.name }}"
