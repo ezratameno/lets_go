@@ -38,6 +38,9 @@ jobs:
           data=$(echo '[ { "manifest": "manifest1", "project": "project1","runner": "Ezra-ta-LPT" },{ "manifest": "manifest2", "project": "project2","runner": "Ezra-ta-LPT" },{ "manifest": "manifest3", "project": "project3","runner": "Ezra-ta-LPT" },{ "manifest": "manifest4", "project": "project4","runner": "Ezra-ta-LPT" }]') 
           echo $data
           echo data=$data >> $GITHUB_OUTPUT
+
+          num_runners=$(cat results.json | jq .num_runners)
+          echo num runners: $num_runners
           echo max-parallel=2 >> $GITHUB_OUTPUT
 
       
